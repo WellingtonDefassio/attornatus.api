@@ -1,5 +1,6 @@
 package com.example.attornatus.api.service;
 
+import com.example.attornatus.api.exception.ResourceNotFoundException;
 import com.example.attornatus.api.model.Pessoa;
 import com.example.attornatus.api.repositories.PessoaRepository;
 import org.junit.jupiter.api.Assertions;
@@ -50,6 +51,21 @@ class PessoaServiceImpTest {
         Assertions.assertEquals(ID, response.getId());
 
     }
+
+    @Test
+    @DisplayName("should throw a ResourceNotFoundException when a ID is not found")
+    void findByIdError() {
+        Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        try {
+            service.findById(ID);
+        } catch (Exception e) {
+
+            Assertions.assertEquals(ResourceNotFoundException.class, e.getClass());
+            Assertions.assertEquals("pessoa não cadastrada", e.getMessage());
+        }
+    }
+
+
 
 
 
