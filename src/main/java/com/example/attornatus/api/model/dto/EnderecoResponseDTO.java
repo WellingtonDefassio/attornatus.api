@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class EnderecoResponseDTO {
-
+    private Long id;
     private String logradouro;
     private String cep;
     private String numero;
@@ -18,6 +18,7 @@ public class EnderecoResponseDTO {
 
     public static EnderecoResponseDTO fromModel(PessoaEndereco pessoaEndereco) {
         return EnderecoResponseDTO.builder()
+                .id(pessoaEndereco.getEndereco().getId())
                 .logradouro(pessoaEndereco.getEndereco().getLogradouro())
                 .cep(pessoaEndereco.getEndereco().getCep())
                 .numero(pessoaEndereco.getEndereco().getNumero())

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 public class PessoaResponseDTO {
-
+    private Long id;
     private String nome;
     private String dataNascimento;
     private List<EnderecoResponseDTO> enderecos;
@@ -20,10 +20,10 @@ public class PessoaResponseDTO {
     public static PessoaResponseDTO fromModel(Pessoa pessoa) {
 
         return PessoaResponseDTO.builder()
+                .id(pessoa.getId())
                 .nome(pessoa.getNome())
                 .dataNascimento(DateUtil.stringFormat(pessoa.getDataNascimento()))
-                .enderecos(pessoa.getEnderecos().stream().map(e -> EnderecoResponseDTO.fromModel(e))
-                        .collect(Collectors.toList()))
+                .enderecos(pessoa.getEnderecos().stream().map(e -> EnderecoResponseDTO.fromModel(e)).collect(Collectors.toList()))
                 .build();
 
     }
