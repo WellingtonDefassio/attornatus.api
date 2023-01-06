@@ -23,7 +23,10 @@ public class PessoaResponseDTO {
                 .id(pessoa.getId())
                 .nome(pessoa.getNome())
                 .dataNascimento(DateUtil.stringFormat(pessoa.getDataNascimento()))
-                .enderecos(pessoa.getEnderecos().stream().map(e -> EnderecoResponseDTO.fromModel(e)).collect(Collectors.toList()))
+                .enderecos(pessoa.getEnderecos()
+                        .stream()
+                        .map(e -> EnderecoResponseDTO.fromModel(e))
+                        .collect(Collectors.toList()))
                 .build();
 
     }
