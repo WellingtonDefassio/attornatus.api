@@ -93,8 +93,48 @@ class PessoaServiceImpTest {
             Assertions.assertEquals(IncorrectDateFormatException.class, e.getClass());
             Assertions.assertEquals("o formato da data deve ser dd-mm-yyyy", e.getMessage());
         }
+    }
+
+    @Test
+    @DisplayName("should update a pessoa when correct values is provide")
+    void updateSuccess() {
+        Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(optionalPessoa);
+        Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
+
+        Pessoa response = service.update(pessoaRequestDTO);
+        Assertions.assertEquals(Pessoa.class, response.getClass());
+        Assertions.assertEquals(response, pessoa);
+        Assertions.assertNotNull(response);
 
     }
+
+    @Test
+    @DisplayName("should throw if a incorrect email pattern is provided")
+    void updateEmailError() {
+        Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(optionalPessoa);
+        Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
+        pessoaRequestDTO.setDataNascimento("31/01/1993");
+        try {
+            service.update(pessoaRequestDTO);
+        } catch (Exception e) {
+            Assertions.assertEquals(IncorrectDateFormatException.class, e.getClass());
+            Assertions.assertEquals("o formato da data deve ser dd-mm-yyyy", e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("should throw if a incorrect email pattern is provided")
+    void updateFindByIdError() {
+        Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
+        try {
+            service.update(pessoaRequestDTO);
+        } catch (Exception e) {
+            Assertions.assertEquals(ResourceNotFoundException.class, e.getClass());
+            Assertions.assertEquals("pessoa não cadastrada", e.getMessage());
+        }
+    }
+
 
 
 
