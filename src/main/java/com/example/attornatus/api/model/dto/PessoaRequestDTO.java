@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class PessoaRequestDTO {
 
+    private Long id;
     @NotBlank(message = "o campo nome é obrigatorio!")
     private String nome;
     @NotBlank(message = "o campo dataNascimento é obrigatorio! pattern 'dd-mm-yyyy'")

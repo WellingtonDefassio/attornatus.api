@@ -17,6 +17,7 @@ public class EnderecoResponseDTO {
 
 
     public static EnderecoResponseDTO fromModel(PessoaEndereco pessoaEndereco) {
+
         return EnderecoResponseDTO.builder()
                 .id(pessoaEndereco.getEndereco().getId())
                 .logradouro(pessoaEndereco.getEndereco().getLogradouro())

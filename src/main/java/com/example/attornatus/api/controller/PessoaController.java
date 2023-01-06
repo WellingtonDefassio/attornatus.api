@@ -1,6 +1,7 @@
 package com.example.attornatus.api.controller;
 
 import com.example.attornatus.api.model.Pessoa;
+import com.example.attornatus.api.model.dto.PessoaCreateResponseDTO;
 import com.example.attornatus.api.model.dto.PessoaRequestDTO;
 import com.example.attornatus.api.model.dto.PessoaResponseDTO;
 import com.example.attornatus.api.service.PessoaService;
@@ -25,11 +26,11 @@ public class PessoaController {
         Pessoa pessoa = pessoaService.findById(id);
         PessoaResponseDTO pessoaResponseDTO = PessoaResponseDTO.fromModel(pessoa);
 
-        return new ResponseEntity<>(pessoaResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(pessoaResponseDTO, HttpStatus.FOUND);
     }
 
     @PostMapping()
-    public ResponseEntity<PessoaResponseDTO> createPessoa(@Valid @RequestBody PessoaRequestDTO pessoaRequestDTO) {
+    public ResponseEntity<PessoaCreateResponseDTO> createPessoa(@Valid @RequestBody PessoaRequestDTO pessoaRequestDTO) {
         Pessoa pessoa = pessoaService.create(pessoaRequestDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -37,6 +38,14 @@ public class PessoaController {
 
         return ResponseEntity.created(uri).build();
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PessoaCreateResponseDTO> updatePessoa(@PathVariable("id") Long id, @Valid @RequestBody PessoaRequestDTO pessoaRequestDTO) {
+        pessoaRequestDTO.setId(id);
+        Pessoa pessoa = pessoaService.update(pessoaRequestDTO);
+        PessoaCreateResponseDTO pessoaCreateResponseDTO = PessoaCreateResponseDTO.fromModel(pessoa);
+        return new ResponseEntity<>(pessoaCreateResponseDTO, HttpStatus.ACCEPTED);
     }
 
 }

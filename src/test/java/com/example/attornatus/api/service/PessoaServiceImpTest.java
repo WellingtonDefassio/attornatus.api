@@ -103,6 +103,6 @@ class PessoaServiceImpTest {
     private void iniciaPessoa() {
         pessoa = new Pessoa(ID, NOME, DATA_NASCIMENTO, null);
         optionalPessoa = Optional.of(new Pessoa(ID, NOME, DATA_NASCIMENTO, null));
-        pessoaRequestDTO = new PessoaRequestDTO(NOME, DATA_NASCIMENTO_STRING);
+        pessoaRequestDTO = new PessoaRequestDTO(ID, NOME, DATA_NASCIMENTO_STRING);
     }
 }

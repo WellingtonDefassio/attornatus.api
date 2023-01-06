@@ -15,11 +15,12 @@ public class PessoaServiceImp implements PessoaService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+
     @Override
     public Pessoa findById(Long id) {
         Pessoa pessoa = pessoaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("pessoa não cadastrada"));
-        
+
         return pessoa;
     }
 
@@ -27,10 +28,17 @@ public class PessoaServiceImp implements PessoaService {
     public Pessoa create(PessoaRequestDTO pessoaRequestDTO) {
         LocalDate dataNascimento = DateUtil.stringToDate(pessoaRequestDTO.getDataNascimento());
         Pessoa pessoa = Pessoa.builder()
+                .id(pessoaRequestDTO.getId())
                 .nome(pessoaRequestDTO.getNome())
                 .dataNascimento(dataNascimento)
                 .build();
 
         return pessoaRepository.save(pessoa);
+    }
+
+    @Override
+    public Pessoa update(PessoaRequestDTO pessoaRequestDTO) {
+        findById(pessoaRequestDTO.getId());
+        return create(pessoaRequestDTO);
     }
 }

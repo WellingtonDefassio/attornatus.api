@@ -7,4 +7,5 @@ public interface PessoaService {
 
     Pessoa findById(Long id);
     Pessoa create(PessoaRequestDTO pessoaRequestDTO);
+    Pessoa update(PessoaRequestDTO pessoaRequestDTO);
 }
