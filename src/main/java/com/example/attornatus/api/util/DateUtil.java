@@ -1,6 +1,6 @@
 package com.example.attornatus.api.util;
 
-import com.example.attornatus.api.exception.IncorrectDateFormat;
+import com.example.attornatus.api.exception.IncorrectDateFormatException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +22,7 @@ public class DateUtil {
         try {
           return LocalDate.parse(data,dateTimeFormatter);
         } catch (Exception e) {
-            throw new IncorrectDateFormat("o formato da data deve ser dd-mm-yyyy");
+            throw new IncorrectDateFormatException("o formato da data deve ser dd-mm-yyyy");
         }
     }
 

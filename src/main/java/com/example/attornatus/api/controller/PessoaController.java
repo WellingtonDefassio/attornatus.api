@@ -1,12 +1,15 @@
 package com.example.attornatus.api.controller;
 
 import com.example.attornatus.api.model.Pessoa;
+import com.example.attornatus.api.model.dto.PessoaRequestDTO;
 import com.example.attornatus.api.model.dto.PessoaResponseDTO;
 import com.example.attornatus.api.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("pessoa")
@@ -23,5 +26,13 @@ public class PessoaController {
         return new ResponseEntity<>(pessoaResponseDTO, HttpStatus.OK);
     }
 
-    
+    @PostMapping()
+    public ResponseEntity<PessoaResponseDTO> createPessoa(@Valid @RequestBody PessoaRequestDTO pessoaRequestDTO) {
+
+        Pessoa pessoa = pessoaService.create(pessoaRequestDTO);
+
+        return null;
+    }
+
+
 }
