@@ -23,7 +23,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(IncorrectDateFormatException.class)
     public ResponseEntity<StandardError> incorrectDataFormat(IncorrectDateFormatException ex, HttpServletRequest request) {
-        StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_GATEWAY.value(), ex.getMessage(), request.getRequestURI());
+        StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
