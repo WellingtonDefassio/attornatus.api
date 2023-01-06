@@ -1,5 +1,6 @@
 package com.example.attornatus.api.exception.handler;
 
+import com.example.attornatus.api.exception.IncorrectDateFormatException;
 import com.example.attornatus.api.exception.ResourceNotFoundException;
 import com.example.attornatus.api.exception.StandardError;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,12 @@ public class CustomExceptionHandler {
         StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), ex.getMessage(), request.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(IncorrectDateFormatException.class)
+    public ResponseEntity<StandardError> incorrectDataFormat(IncorrectDateFormatException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_GATEWAY.value(), ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }
