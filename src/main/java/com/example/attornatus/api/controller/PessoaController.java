@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping("pessoa")
@@ -18,7 +20,7 @@ public class PessoaController {
     @Autowired
     private PessoaService pessoaService;
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PessoaResponseDTO> findPessoaById(@PathVariable("id") Long id) {
         Pessoa pessoa = pessoaService.findById(id);
         PessoaResponseDTO pessoaResponseDTO = PessoaResponseDTO.fromModel(pessoa);
@@ -28,11 +30,13 @@ public class PessoaController {
 
     @PostMapping()
     public ResponseEntity<PessoaResponseDTO> createPessoa(@Valid @RequestBody PessoaRequestDTO pessoaRequestDTO) {
-
         Pessoa pessoa = pessoaService.create(pessoaRequestDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(pessoa.getId()).toUri();
 
-        return null;
+        return ResponseEntity.created(uri).build();
+
     }
-
 
 }
