@@ -1,6 +1,7 @@
 package com.example.attornatus.api.service;
 
 import com.example.attornatus.api.exception.IncorrectDateFormatException;
+import com.example.attornatus.api.exception.NameAlreadyExistsException;
 import com.example.attornatus.api.exception.ResourceNotFoundException;
 import com.example.attornatus.api.model.Pessoa;
 import com.example.attornatus.api.model.dto.PessoaRequestDTO;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 @SpringBootTest
 class PessoaServiceImpTest {
@@ -96,6 +98,22 @@ class PessoaServiceImpTest {
     }
 
     @Test
+    @DisplayName("should throw wen try created a user with a existing name")
+    void createDuplicatedNameError() {
+        Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
+        Mockito.when(pessoaRepository.findByNome(anyString())).thenReturn(optionalPessoa);
+        try {
+            service.create(pessoaRequestDTO);
+        } catch (Exception e) {
+            Assertions.assertEquals(NameAlreadyExistsException.class, e.getClass());
+            Assertions.assertEquals("nome já cadastrado", e.getMessage());
+        }
+    }
+
+
+
+
+    @Test
     @DisplayName("should update a pessoa when correct values is provide")
     void updateSuccess() {
         Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(optionalPessoa);
@@ -132,6 +150,20 @@ class PessoaServiceImpTest {
         } catch (Exception e) {
             Assertions.assertEquals(ResourceNotFoundException.class, e.getClass());
             Assertions.assertEquals("pessoa não cadastrada", e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("should throw wen try created a user with a existing name")
+    void updateDuplicatedNameError() {
+        Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(optionalPessoa);
+        Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
+        Mockito.when(pessoaRepository.findByNome(anyString())).thenReturn(optionalPessoa);
+        try {
+            service.update(pessoaRequestDTO);
+        } catch (Exception e) {
+            Assertions.assertEquals(NameAlreadyExistsException.class, e.getClass());
+            Assertions.assertEquals("nome já cadastrado", e.getMessage());
         }
     }
 
