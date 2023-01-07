@@ -24,14 +24,6 @@ public class PessoaController {
     @Autowired
     private PessoaService pessoaService;
 
-    @GetMapping("endereco/{id}")
-    public ResponseEntity<PessoaEnderecoResponseDTO> findPessoaEEnderecoById(@PathVariable("id") Long id) {
-        Pessoa pessoa = pessoaService.findById(id);
-        PessoaEnderecoResponseDTO pessoaEnderecoResponseDTO = PessoaEnderecoResponseDTO.fromModel(pessoa);
-
-        return new ResponseEntity<>(pessoaEnderecoResponseDTO, HttpStatus.FOUND);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<PessoaResponseDTO> findPessoaById(@PathVariable("id") Long id) {
         Pessoa pessoa = pessoaService.findById(id);
@@ -66,15 +58,6 @@ public class PessoaController {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("nome"));
         Page<Pessoa> pessoas = pessoaService.findAll(pageRequest);
         Page<PessoaResponseDTO> responseDTOPage = PessoaResponseDTO.fromModels(pessoas);
-        return responseDTOPage;
-    }
-
-    @GetMapping("endereco/lista")
-    public Page<PessoaEnderecoResponseDTO> findPessoasEEnderecos(@RequestParam("page") int page,
-                                                @RequestParam("size") int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("nome"));
-        Page<Pessoa> pessoas = pessoaService.findAll(pageRequest);
-        Page<PessoaEnderecoResponseDTO> responseDTOPage = PessoaEnderecoResponseDTO.fromModels(pessoas);
         return responseDTOPage;
     }
 
