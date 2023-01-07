@@ -5,7 +5,15 @@ insert into pessoa (nome, data_nascimento) values ('Maria do Carmo', '1993-07-23
 insert into pessoa (nome, data_nascimento) values ('Larissa Manuela', '1995-02-03');
 insert into pessoa (nome, data_nascimento) values ('Joaquim Santos', '1990-05-03');
 insert into pessoa (nome, data_nascimento) values ('Fabio Milton', '1993-05-26');
-insert into pessoa (nome, data_nascimento) values ('Flavia Alexandra', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Felipe Alexandra', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Silmara Jeace', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Livia Alexandra', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Rodrigues Rodrigues', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Rodrigues Alexandra', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Valerio Alexandra', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Valeria Alexandra', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Marciano Alexandra', '1996-10-27');
+insert into pessoa (nome, data_nascimento) values ('Marciana Alexandra', '1996-10-27');
 
 --INSERINDO ENDEREÇOS--
 insert into endereco (cep, cidade, logradouro, numero) values ('12598569','sao paulo','Rua Vasco da Gama','138');

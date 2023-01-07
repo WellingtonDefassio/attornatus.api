@@ -4,6 +4,7 @@ import com.example.attornatus.api.model.Pessoa;
 import com.example.attornatus.api.util.DateUtil;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,11 +26,14 @@ public class PessoaEnderecoResponseDTO {
                 .dataNascimento(DateUtil.stringFormat(pessoa.getDataNascimento()))
                 .enderecos(pessoa.getEnderecos()
                         .stream()
-                        .map(e ->  EnderecoResponseDTO.fromModel(e))
+                        .map(e -> EnderecoResponseDTO.fromModel(e))
                         .collect(Collectors.toList()))
                 .build();
 
     }
 
 
+    public static Page<PessoaEnderecoResponseDTO> fromModels(Page<Pessoa> pessoas) {
+        return pessoas.map(PessoaEnderecoResponseDTO::fromModel);
+    }
 }

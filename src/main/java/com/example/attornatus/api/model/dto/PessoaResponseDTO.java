@@ -4,6 +4,7 @@ import com.example.attornatus.api.model.Pessoa;
 import com.example.attornatus.api.util.DateUtil;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 @Data
 @Builder
@@ -21,6 +22,7 @@ public class PessoaResponseDTO {
                 .dataNascimento(DateUtil.stringFormat(pessoa.getDataNascimento()))
                 .build();
     }
-
-
+    public static Page<PessoaResponseDTO> fromModels(Page<Pessoa> pessoas) {
+        return pessoas.map(PessoaResponseDTO::fromModel);
+    }
 }

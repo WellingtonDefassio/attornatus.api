@@ -7,6 +7,8 @@ import com.example.attornatus.api.model.dto.PessoaRequestDTO;
 import com.example.attornatus.api.repositories.PessoaRepository;
 import com.example.attornatus.api.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,6 +47,10 @@ public class PessoaServiceImp implements PessoaService {
         return create(pessoaRequestDTO);
     }
 
+    @Override
+    public Page<Pessoa> findAll(Pageable pageable) {
+        return pessoaRepository.findAll(pageable);
+    }
 
     private void validateUnique(PessoaRequestDTO pessoaRequestDTO) {
         Optional<Pessoa> optionalPessoa = pessoaRepository.findByNome(pessoaRequestDTO.getNome());
