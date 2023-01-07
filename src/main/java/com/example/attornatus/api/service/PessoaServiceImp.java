@@ -1,5 +1,6 @@
 package com.example.attornatus.api.service;
 
+import com.example.attornatus.api.exception.NameAlreadyExistsException;
 import com.example.attornatus.api.exception.ResourceNotFoundException;
 import com.example.attornatus.api.model.Pessoa;
 import com.example.attornatus.api.model.dto.PessoaRequestDTO;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class PessoaServiceImp implements PessoaService {
@@ -27,6 +29,7 @@ public class PessoaServiceImp implements PessoaService {
     @Override
     public Pessoa create(PessoaRequestDTO pessoaRequestDTO) {
         LocalDate dataNascimento = DateUtil.stringToDate(pessoaRequestDTO.getDataNascimento());
+        validateUnique(pessoaRequestDTO);
         Pessoa pessoa = Pessoa.builder()
                 .id(pessoaRequestDTO.getId())
                 .nome(pessoaRequestDTO.getNome())
@@ -40,5 +43,13 @@ public class PessoaServiceImp implements PessoaService {
     public Pessoa update(PessoaRequestDTO pessoaRequestDTO) {
         findById(pessoaRequestDTO.getId());
         return create(pessoaRequestDTO);
+    }
+
+
+    private void validateUnique(PessoaRequestDTO pessoaRequestDTO) {
+        Optional<Pessoa> optionalPessoa = pessoaRepository.findByNome(pessoaRequestDTO.getNome());
+        if (optionalPessoa.isPresent()) {
+            throw new NameAlreadyExistsException("nome já cadastrado");
+        }
     }
 }

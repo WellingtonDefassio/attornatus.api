@@ -1,6 +1,7 @@
 package com.example.attornatus.api.exception.handler;
 
 import com.example.attornatus.api.exception.IncorrectDateFormatException;
+import com.example.attornatus.api.exception.NameAlreadyExistsException;
 import com.example.attornatus.api.exception.ResourceNotFoundException;
 import com.example.attornatus.api.exception.StandardError;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,11 @@ public class CustomExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<StandardError> argumentsNotValid(MethodArgumentNotValidException ex, HttpServletRequest request) {
         StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getFieldError().getDefaultMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+    @ExceptionHandler(NameAlreadyExistsException.class)
+    public ResponseEntity<StandardError> argumentsNotValid(NameAlreadyExistsException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
