@@ -1,9 +1,9 @@
 package com.example.attornatus.api.controller;
 
 import com.example.attornatus.api.model.Pessoa;
-import com.example.attornatus.api.model.dto.PessoaResponseDTO;
-import com.example.attornatus.api.model.dto.PessoaRequestDTO;
 import com.example.attornatus.api.model.dto.PessoaEnderecoResponseDTO;
+import com.example.attornatus.api.model.dto.PessoaRequestDTO;
+import com.example.attornatus.api.model.dto.PessoaResponseDTO;
 import com.example.attornatus.api.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.awt.print.Pageable;
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("pessoa")
@@ -75,11 +72,11 @@ public class PessoaController {
     @GetMapping("endereco/lista")
     public Page<PessoaEnderecoResponseDTO> findPessoasEEnderecos(@RequestParam("page") int page,
                                                 @RequestParam("size") int size) {
-
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("nome"));
         Page<Pessoa> pessoas = pessoaService.findAll(pageRequest);
         Page<PessoaEnderecoResponseDTO> responseDTOPage = PessoaEnderecoResponseDTO.fromModels(pessoas);
         return responseDTOPage;
     }
+
 
 }
