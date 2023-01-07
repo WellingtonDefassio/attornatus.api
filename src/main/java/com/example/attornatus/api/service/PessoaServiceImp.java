@@ -54,7 +54,7 @@ public class PessoaServiceImp implements PessoaService {
 
     private void validateUnique(PessoaRequestDTO pessoaRequestDTO) {
         Optional<Pessoa> optionalPessoa = pessoaRepository.findByNome(pessoaRequestDTO.getNome());
-        if (optionalPessoa.isPresent()) {
+        if (optionalPessoa.isPresent() && optionalPessoa.get().getId() != pessoaRequestDTO.getId() ) {
             throw new NameAlreadyExistsException("nome já cadastrado");
         }
     }
