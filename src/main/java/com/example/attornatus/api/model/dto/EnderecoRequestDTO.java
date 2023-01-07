@@ -1,5 +1,6 @@
 package com.example.attornatus.api.model.dto;
 
+import com.example.attornatus.api.model.Endereco;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class EnderecoRequestDTO {
     private String numero;
     @NotBlank(message = "o campo cidade é obrigatorio")
     private String cidade;
+
 
 
 }

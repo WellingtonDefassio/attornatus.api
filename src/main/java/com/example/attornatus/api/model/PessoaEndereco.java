@@ -3,6 +3,7 @@ package com.example.attornatus.api.model;
 import com.example.attornatus.api.model.id.PessoaEnderecoChave;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PessoaEndereco {
 
     @EmbeddedId

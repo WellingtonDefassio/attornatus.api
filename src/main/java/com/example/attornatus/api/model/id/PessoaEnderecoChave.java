@@ -1,5 +1,7 @@
 package com.example.attornatus.api.model.id;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,8 @@ import java.util.Objects;
 @Data
 @Embeddable
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PessoaEnderecoChave implements Serializable {
 
     @Column(name = "pessoa_id")

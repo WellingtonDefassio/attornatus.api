@@ -56,7 +56,7 @@ public class PessoaController {
         pessoaRequestDTO.setId(id);
         Pessoa pessoa = pessoaService.update(pessoaRequestDTO);
         PessoaResponseDTO pessoaResponseDTO = PessoaResponseDTO.fromModel(pessoa);
-        return new ResponseEntity<>(pessoaResponseDTO, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(pessoaResponseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/lista")
