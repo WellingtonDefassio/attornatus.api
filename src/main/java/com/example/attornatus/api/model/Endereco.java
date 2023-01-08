@@ -33,6 +33,26 @@ public class Endereco {
     private String cidade;
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Endereco endereco = (Endereco) o;
+
+        if (!id.equals(endereco.id)) return false;
+        if (!cep.equals(endereco.cep)) return false;
+        return numero.equals(endereco.numero);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + cep.hashCode();
+        result = 31 * result + numero.hashCode();
+        return result;
+    }
+
     public static void validaCep(String cep) {
         if (cep.length() != 8) {
             throw new IncorrectDateFormatException("campo cep devem conter 8 numeros");

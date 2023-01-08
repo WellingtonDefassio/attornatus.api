@@ -1,7 +1,9 @@
 package com.example.attornatus.api.service;
 
+import com.example.attornatus.api.exception.ResourceNotFoundException;
 import com.example.attornatus.api.model.Endereco;
-import com.example.attornatus.api.model.dto.EnderecoRequestDTO;
+import com.example.attornatus.api.model.Pessoa;
+import com.example.attornatus.api.model.dto.EnderecoRequest;
 import com.example.attornatus.api.repositories.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ public class EnderecoServiceImp implements EnderecoService {
 
 
     @Override
-    public Endereco create(EnderecoRequestDTO requestDTO) {
+    public Endereco create(EnderecoRequest requestDTO) {
         Endereco.validaCep(requestDTO.getCep());
         Optional<Endereco> enderecoOptional = findByCepENumero(requestDTO);
         if (enderecoOptional.isPresent()) {
@@ -33,8 +35,19 @@ public class EnderecoServiceImp implements EnderecoService {
     }
 
     @Override
-    public Optional<Endereco> findByCepENumero(EnderecoRequestDTO enderecoRequestDTO) {
-        return enderecoRepository.findByCepAndNumero(enderecoRequestDTO.getCep(), enderecoRequestDTO.getNumero());
+    public Optional<Endereco> findByCepENumero(EnderecoRequest enderecoRequest) {
+        return enderecoRepository.findByCepAndNumero(enderecoRequest.getCep(), enderecoRequest.getNumero());
+    }
+
+    @Override
+    public Endereco findById(Long id) {
+
+        Endereco endereco = enderecoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("endereco não encontrado"));
+
+        return endereco;
+
+
     }
 
 

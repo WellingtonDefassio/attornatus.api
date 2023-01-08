@@ -2,8 +2,9 @@ package com.example.attornatus.api.controller;
 
 import com.example.attornatus.api.model.Pessoa;
 import com.example.attornatus.api.model.PessoaEndereco;
-import com.example.attornatus.api.model.dto.EnderecoRequestDTO;
-import com.example.attornatus.api.model.dto.PessoaEnderecoResponseDTO;
+import com.example.attornatus.api.model.dto.EnderecoRequest;
+import com.example.attornatus.api.model.dto.PessoaEnderecoResponse;
+import com.example.attornatus.api.model.dto.SetPrincipalRequest;
 import com.example.attornatus.api.service.PessoaEnderecoService;
 import com.example.attornatus.api.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,9 @@ import java.net.URI;
 @RequestMapping("endereco")
 public class EnderecoController {
 
+    private final String pessoaController = "/pessoa/endereco/";
     @Value("${dev.url}")
     private String path;
-    private final String pessoaController = "/pessoa/endereco/";
-
     @Autowired
     private PessoaEnderecoService pessoaEnderecoService;
 
@@ -34,37 +34,45 @@ public class EnderecoController {
     private PessoaService pessoaService;
 
     @PostMapping("/{id}")
-    public ResponseEntity<PessoaEnderecoResponseDTO> criarEnderecoParaPessoa(
+    public ResponseEntity<PessoaEnderecoResponse> criarEnderecoParaPessoa(
             @PathVariable("id") Long id,
-            @Valid @RequestBody EnderecoRequestDTO enderecoRequestDTO) {
+            @Valid @RequestBody EnderecoRequest enderecoRequest) {
 
-        PessoaEndereco pessoaEndereco = pessoaEnderecoService.create(id, enderecoRequestDTO);
-        PessoaEnderecoResponseDTO pessoaEnderecoResponseDTO = PessoaEnderecoResponseDTO.fromModel(pessoaEndereco.getPessoa());
+        PessoaEndereco pessoaEndereco = pessoaEnderecoService.create(id, enderecoRequest);
+        PessoaEnderecoResponse pessoaEnderecoResponse = PessoaEnderecoResponse.fromModel(pessoaEndereco.getPessoa());
 
         URI uri = ServletUriComponentsBuilder.fromUri(URI.create(path + pessoaController))
                 .path("/{id}")
-                .buildAndExpand(pessoaEnderecoResponseDTO.getId()).toUri();
+                .buildAndExpand(pessoaEnderecoResponse.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PessoaEnderecoResponseDTO> findPessoaEEnderecoById(@PathVariable("id") Long id) {
+    public ResponseEntity<PessoaEnderecoResponse> findPessoaEEnderecoById(@PathVariable("id") Long id) {
         Pessoa pessoa = pessoaService.findById(id);
-        PessoaEnderecoResponseDTO pessoaEnderecoResponseDTO = PessoaEnderecoResponseDTO.fromModel(pessoa);
+        PessoaEnderecoResponse pessoaEnderecoResponse = PessoaEnderecoResponse.fromModel(pessoa);
 
-        return new ResponseEntity<>(pessoaEnderecoResponseDTO, HttpStatus.FOUND);
+        return new ResponseEntity<>(pessoaEnderecoResponse, HttpStatus.FOUND);
     }
 
 
     @GetMapping("/lista")
-    public Page<PessoaEnderecoResponseDTO> findPessoasEEnderecos(@RequestParam("page") int page,
-                                                                 @RequestParam("size") int size) {
+    public ResponseEntity<Page<PessoaEnderecoResponse>> findPessoasEEnderecos(@RequestParam("page") int page,
+                                                                              @RequestParam("size") int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("nome"));
         Page<Pessoa> pessoas = pessoaService.findAll(pageRequest);
-        Page<PessoaEnderecoResponseDTO> responseDTOPage = PessoaEnderecoResponseDTO.fromModels(pessoas);
-        return responseDTOPage;
+        Page<PessoaEnderecoResponse> responseDTOPage = PessoaEnderecoResponse.fromModels(pessoas);
+        return new ResponseEntity(responseDTOPage, HttpStatus.OK);
+    }
+
+    @PostMapping("/principal")
+    public ResponseEntity<?> setPrincipal(@RequestBody SetPrincipalRequest principalRequest) {
+
+        PessoaEndereco pessoaEndereco = pessoaEnderecoService.atualizaPrincipal(principalRequest);
+        PessoaEnderecoResponse pessoaEnderecoResponse = PessoaEnderecoResponse.fromModel(pessoaEndereco.getPessoa());
+        return new ResponseEntity<>(pessoaEnderecoResponse, HttpStatus.OK);
     }
 
 

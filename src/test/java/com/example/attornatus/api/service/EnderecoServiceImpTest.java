@@ -1,10 +1,8 @@
 package com.example.attornatus.api.service;
 
 import com.example.attornatus.api.exception.IncorrectDateFormatException;
-import com.example.attornatus.api.exception.ResourceNotFoundException;
 import com.example.attornatus.api.model.Endereco;
-import com.example.attornatus.api.model.Pessoa;
-import com.example.attornatus.api.model.dto.EnderecoRequestDTO;
+import com.example.attornatus.api.model.dto.EnderecoRequest;
 import com.example.attornatus.api.repositories.EnderecoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +29,7 @@ class EnderecoServiceImpTest {
     private EnderecoRepository enderecoRepository;
 
     private Endereco endereco;
-    private EnderecoRequestDTO enderecoRequestDTO;
+    private EnderecoRequest enderecoRequest;
     private Optional<Endereco> optionalEndereco;
 
     @BeforeEach
@@ -46,7 +44,7 @@ class EnderecoServiceImpTest {
         Mockito.when(enderecoRepository.
                 findByCepAndNumero(Mockito.anyString(), Mockito.anyString()))
                         .thenReturn(optionalEndereco);
-        Endereco response = service.create(enderecoRequestDTO);
+        Endereco response = service.create(enderecoRequest);
 
         Assertions.assertEquals(Endereco.class, response.getClass());
         Assertions.assertNotNull(response);
@@ -59,9 +57,9 @@ class EnderecoServiceImpTest {
         Mockito.when(enderecoRepository.
                         findByCepAndNumero(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(optionalEndereco);
-        enderecoRequestDTO.setCep("1234567");
+        enderecoRequest.setCep("1234567");
         try {
-            service.create(enderecoRequestDTO);
+            service.create(enderecoRequest);
         } catch (Exception e) {
             Assertions.assertEquals(IncorrectDateFormatException.class, e.getClass());
             Assertions.assertEquals("campo cep devem conter 8 numeros", e.getMessage());
@@ -74,9 +72,9 @@ class EnderecoServiceImpTest {
         Mockito.when(enderecoRepository.
                         findByCepAndNumero(Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(optionalEndereco);
-        enderecoRequestDTO.setCep("A123E59K");
+        enderecoRequest.setCep("A123E59K");
         try {
-            service.create(enderecoRequestDTO);
+            service.create(enderecoRequest);
         } catch (Exception e) {
             Assertions.assertEquals(IncorrectDateFormatException.class, e.getClass());
             Assertions.assertEquals("campo cep devem conter apenas numeros patten 00000000", e.getMessage());
@@ -90,6 +88,6 @@ class EnderecoServiceImpTest {
     private void iniciaEndereco() {
         endereco = new Endereco(ID, LOGRADOURO, CEP, NUMERO, CIDADE);
         optionalEndereco = Optional.of(new Endereco(ID, LOGRADOURO, CEP, NUMERO, CIDADE));
-        enderecoRequestDTO = new EnderecoRequestDTO(ID, LOGRADOURO, CEP, NUMERO,CIDADE);
+        enderecoRequest = new EnderecoRequest(ID, LOGRADOURO, CEP, NUMERO,CIDADE);
     }
 }

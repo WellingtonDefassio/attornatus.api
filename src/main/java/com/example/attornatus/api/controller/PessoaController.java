@@ -1,9 +1,8 @@
 package com.example.attornatus.api.controller;
 
 import com.example.attornatus.api.model.Pessoa;
-import com.example.attornatus.api.model.dto.PessoaEnderecoResponseDTO;
-import com.example.attornatus.api.model.dto.PessoaRequestDTO;
-import com.example.attornatus.api.model.dto.PessoaResponseDTO;
+import com.example.attornatus.api.model.dto.PessoaRequest;
+import com.example.attornatus.api.model.dto.PessoaResponse;
 import com.example.attornatus.api.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,16 +24,16 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PessoaResponseDTO> findPessoaById(@PathVariable("id") Long id) {
+    public ResponseEntity<PessoaResponse> findPessoaById(@PathVariable("id") Long id) {
         Pessoa pessoa = pessoaService.findById(id);
-        PessoaResponseDTO createResponseDTO = PessoaResponseDTO.fromModel(pessoa);
+        PessoaResponse createResponseDTO = PessoaResponse.fromModel(pessoa);
 
         return new ResponseEntity<>(createResponseDTO, HttpStatus.FOUND);
     }
 
     @PostMapping()
-    public ResponseEntity<PessoaResponseDTO> createPessoa(@Valid @RequestBody PessoaRequestDTO pessoaRequestDTO) {
-        Pessoa pessoa = pessoaService.create(pessoaRequestDTO);
+    public ResponseEntity<PessoaResponse> createPessoa(@Valid @RequestBody PessoaRequest pessoaRequest) {
+        Pessoa pessoa = pessoaService.create(pessoaRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(pessoa.getId()).toUri();
@@ -44,20 +43,20 @@ public class PessoaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PessoaResponseDTO> updatePessoa(@PathVariable("id") Long id, @Valid @RequestBody PessoaRequestDTO pessoaRequestDTO) {
-        pessoaRequestDTO.setId(id);
-        Pessoa pessoa = pessoaService.update(pessoaRequestDTO);
-        PessoaResponseDTO pessoaResponseDTO = PessoaResponseDTO.fromModel(pessoa);
-        return new ResponseEntity<>(pessoaResponseDTO, HttpStatus.OK);
+    public ResponseEntity<PessoaResponse> updatePessoa(@PathVariable("id") Long id, @Valid @RequestBody PessoaRequest pessoaRequest) {
+        pessoaRequest.setId(id);
+        Pessoa pessoa = pessoaService.update(pessoaRequest);
+        PessoaResponse pessoaResponse = PessoaResponse.fromModel(pessoa);
+        return new ResponseEntity<>(pessoaResponse, HttpStatus.OK);
     }
 
     @GetMapping("/lista")
-    public Page<PessoaResponseDTO> findPessoa(@RequestParam("page") int page,
-                                                @RequestParam("size") int size) {
+    public Page<PessoaResponse> findPessoa(@RequestParam("page") int page,
+                                           @RequestParam("size") int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("nome"));
         Page<Pessoa> pessoas = pessoaService.findAll(pageRequest);
-        Page<PessoaResponseDTO> responseDTOPage = PessoaResponseDTO.fromModels(pessoas);
+        Page<PessoaResponse> responseDTOPage = PessoaResponse.fromModels(pessoas);
         return responseDTOPage;
     }
 
