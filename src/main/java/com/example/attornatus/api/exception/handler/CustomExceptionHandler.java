@@ -36,12 +36,12 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
     @ExceptionHandler(NameAlreadyExistsException.class)
-    public ResponseEntity<StandardError> argumentsNotValid(NameAlreadyExistsException ex, HttpServletRequest request) {
+    public ResponseEntity<StandardError> nomeAlreadyExists(NameAlreadyExistsException ex, HttpServletRequest request) {
         StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<StandardError> argumentsNotValid(HttpMessageNotReadableException ex, HttpServletRequest request) {
+    public ResponseEntity<StandardError> notReadable(HttpMessageNotReadableException ex, HttpServletRequest request) {
         StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage().substring(0, 32), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }

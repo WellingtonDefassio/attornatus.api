@@ -51,8 +51,8 @@ public class PessoaController {
     }
 
     @GetMapping("/lista")
-    public Page<PessoaResponse> findPessoa(@RequestParam("page") int page,
-                                           @RequestParam("size") int size) {
+    public Page<PessoaResponse> findPessoa(@RequestParam(value = "page", defaultValue = "0") int page,
+                                           @RequestParam(value = "size", defaultValue = "10") int size) {
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("nome"));
         Page<Pessoa> pessoas = pessoaService.findAll(pageRequest);

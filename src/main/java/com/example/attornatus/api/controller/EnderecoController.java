@@ -59,8 +59,8 @@ public class EnderecoController {
 
 
     @GetMapping("/lista")
-    public ResponseEntity<Page<PessoaEnderecoResponse>> findPessoasEEnderecos(@RequestParam("page") int page,
-                                                                              @RequestParam("size") int size) {
+    public ResponseEntity<Page<PessoaEnderecoResponse>> findPessoasEEnderecos(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                                              @RequestParam(value = "size", defaultValue = "10") int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("nome"));
         Page<Pessoa> pessoas = pessoaService.findAll(pageRequest);
         Page<PessoaEnderecoResponse> responseDTOPage = PessoaEnderecoResponse.fromModels(pessoas);
@@ -68,7 +68,7 @@ public class EnderecoController {
     }
 
     @PostMapping("/principal")
-    public ResponseEntity<?> setPrincipal(@RequestBody SetPrincipalRequest principalRequest) {
+    public ResponseEntity<?> setPrincipal(@Valid @RequestBody SetPrincipalRequest principalRequest) {
 
         PessoaEndereco pessoaEndereco = pessoaEnderecoService.atualizaPrincipal(principalRequest);
         PessoaEnderecoResponse pessoaEnderecoResponse = PessoaEnderecoResponse.fromModel(pessoaEndereco.getPessoa());
