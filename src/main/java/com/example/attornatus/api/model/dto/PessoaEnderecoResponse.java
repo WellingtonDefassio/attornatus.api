@@ -11,29 +11,29 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
-public class PessoaEnderecoResponseDTO {
+public class PessoaEnderecoResponse {
     private Long id;
     private String nome;
     private String dataNascimento;
-    private List<EnderecoResponseDTO> enderecos;
+    private List<EnderecoResponse> enderecos;
 
 
-    public static PessoaEnderecoResponseDTO fromModel(Pessoa pessoa) {
+    public static PessoaEnderecoResponse fromModel(Pessoa pessoa) {
 
-        return PessoaEnderecoResponseDTO.builder()
+        return PessoaEnderecoResponse.builder()
                 .id(pessoa.getId())
                 .nome(pessoa.getNome())
                 .dataNascimento(DateUtil.stringFormat(pessoa.getDataNascimento()))
                 .enderecos(pessoa.getEnderecos()
                         .stream()
-                        .map(e -> EnderecoResponseDTO.fromModel(e))
+                        .map(e -> EnderecoResponse.fromModel(e))
                         .collect(Collectors.toList()))
                 .build();
 
     }
 
 
-    public static Page<PessoaEnderecoResponseDTO> fromModels(Page<Pessoa> pessoas) {
-        return pessoas.map(PessoaEnderecoResponseDTO::fromModel);
+    public static Page<PessoaEnderecoResponse> fromModels(Page<Pessoa> pessoas) {
+        return pessoas.map(PessoaEnderecoResponse::fromModel);
     }
 }

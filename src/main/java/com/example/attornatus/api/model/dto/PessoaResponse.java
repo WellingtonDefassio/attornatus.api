@@ -8,21 +8,21 @@ import org.springframework.data.domain.Page;
 
 @Data
 @Builder
-public class PessoaResponseDTO {
+public class PessoaResponse {
     private Long id;
     private String nome;
     private String dataNascimento;
 
 
-    public static PessoaResponseDTO fromModel(Pessoa pessoa) {
+    public static PessoaResponse fromModel(Pessoa pessoa) {
 
-        return PessoaResponseDTO.builder()
+        return PessoaResponse.builder()
                 .id(pessoa.getId())
                 .nome(pessoa.getNome())
                 .dataNascimento(DateUtil.stringFormat(pessoa.getDataNascimento()))
                 .build();
     }
-    public static Page<PessoaResponseDTO> fromModels(Page<Pessoa> pessoas) {
-        return pessoas.map(PessoaResponseDTO::fromModel);
+    public static Page<PessoaResponse> fromModels(Page<Pessoa> pessoas) {
+        return pessoas.map(PessoaResponse::fromModel);
     }
 }

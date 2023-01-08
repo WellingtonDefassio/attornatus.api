@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class PessoaRequestDTO {
+public class PessoaRequest {
 
     private Long id;
     @NotBlank(message = "o campo nome é obrigatorio!")

@@ -1,6 +1,5 @@
 package com.example.attornatus.api.model.dto;
 
-import com.example.attornatus.api.model.Endereco;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class EnderecoRequestDTO {
+public class EnderecoRequest {
 
     private Long id;
     @NotBlank(message = "o campo logradouro é obrigatorio")
