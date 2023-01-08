@@ -41,13 +41,9 @@ public class EnderecoServiceImp implements EnderecoService {
 
     @Override
     public Endereco findById(Long id) {
-
         Endereco endereco = enderecoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("endereco não encontrado"));
-
         return endereco;
-
-
     }
 
 
