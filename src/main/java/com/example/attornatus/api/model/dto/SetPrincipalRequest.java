@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class SetPrincipalRequest {
-    @NotBlank(message = "o campo idPessoa é obrigatorio")
+    @NotNull(message = "o campo idPessoa é obrigatorio")
     private Long idPessoa;
-    @NotBlank(message = "o campo idEndereco é obrigatorio")
+    @NotNull(message = "o campo idEndereco é obrigatorio")
     private Long idEndereco;
 
 }
