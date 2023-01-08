@@ -6,19 +6,17 @@ import com.example.attornatus.api.model.Endereco;
 import com.example.attornatus.api.model.Pessoa;
 import com.example.attornatus.api.model.PessoaEndereco;
 import com.example.attornatus.api.model.dto.EnderecoRequest;
+import com.example.attornatus.api.model.dto.SetPrincipalRequest;
 import com.example.attornatus.api.model.id.PessoaEnderecoChave;
 import com.example.attornatus.api.repositories.PessoaEnderecoRepository;
-import com.example.attornatus.api.repositories.PessoaRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
+import java.util.List;
 
 class PessoaEnderecoServiceImpTest {
 
@@ -46,6 +44,7 @@ class PessoaEnderecoServiceImpTest {
     private EnderecoRequest enderecoRequest;
     private Pessoa pessoa;
     private Endereco endereco;
+    private SetPrincipalRequest setPrincipalRequest;
 
 
     @BeforeEach
@@ -98,11 +97,42 @@ class PessoaEnderecoServiceImpTest {
 
     }
 
+    @Test
+    @DisplayName("should pass when all data is correct")
+    void atualizaPrincipalSucesso() {
+        Mockito.when(pessoaService.findById(Mockito.anyLong())).thenReturn(pessoa);
+        Mockito.when(enderecoService.findById(Mockito.anyLong())).thenReturn(endereco);
+        Mockito.when(pessoaEnderecoRepository.save(Mockito.any())).thenReturn(pessoaEndereco);
+        PessoaEndereco response = service.atualizaPrincipal(setPrincipalRequest);
+        Assertions.assertEquals(PessoaEndereco.class, response.getClass());
+        Assertions.assertEquals(response, pessoaEndereco);
+        Assertions.assertNotNull(response);
+    }
+
+    @Test
+    @DisplayName("should throw if address not belong to the person")
+    void atualizaPrincipalFailPessoaEndereco() {
+        Mockito.when(pessoaService.findById(Mockito.anyLong())).thenReturn(pessoa);
+        Endereco failEndereco = new Endereco(10L, LOGRADOURO, CEP, NUMERO, CIDADE);
+        Mockito.when(enderecoService.findById(Mockito.anyLong())).thenReturn(failEndereco);
+        Mockito.when(pessoaEnderecoRepository.save(Mockito.any())).thenReturn(pessoaEndereco);
+        try {
+            service.atualizaPrincipal(setPrincipalRequest);
+        } catch (Exception e) {
+            Assertions.assertEquals(ResourceNotFoundException.class, e.getClass());
+            Assertions.assertEquals("pessoa não possui o endereço informado", e.getMessage());
+        }
+    }
+
+
 
     private void iniciaDados() {
         pessoa = new Pessoa(ID, NOME, DATA_NASCIMENTO, null);
         endereco = new Endereco(ID, LOGRADOURO, CEP, NUMERO, CIDADE);
-        enderecoRequest = new EnderecoRequest(ID, LOGRADOURO, CEP, NUMERO, CIDADE);
         pessoaEndereco = new PessoaEndereco(new PessoaEnderecoChave(ID, ID), endereco, pessoa, false);
+        enderecoRequest = new EnderecoRequest(ID, LOGRADOURO, CEP, NUMERO, CIDADE);
+        setPrincipalRequest = new SetPrincipalRequest(ID, ID);
+        pessoa.setEnderecos(List.of(pessoaEndereco));
     }
+
 }
