@@ -4,7 +4,7 @@ import com.example.attornatus.api.exception.IncorrectDateFormatException;
 import com.example.attornatus.api.exception.NameAlreadyExistsException;
 import com.example.attornatus.api.exception.ResourceNotFoundException;
 import com.example.attornatus.api.model.Pessoa;
-import com.example.attornatus.api.model.dto.PessoaRequestDTO;
+import com.example.attornatus.api.model.dto.PessoaRequest;
 import com.example.attornatus.api.repositories.PessoaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +17,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -40,7 +38,7 @@ class PessoaServiceImpTest {
     private Pessoa pessoa;
     private Optional<Pessoa> optionalPessoa;
 
-    private PessoaRequestDTO pessoaRequestDTO;
+    private PessoaRequest pessoaRequest;
 
     @BeforeEach
     void setUp() {
@@ -77,7 +75,7 @@ class PessoaServiceImpTest {
     @DisplayName("should create a new person when all correct params is provided")
     void createSuccess() {
         Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
-        Pessoa response = service.create(pessoaRequestDTO);
+        Pessoa response = service.create(pessoaRequest);
         Assertions.assertEquals(Pessoa.class, response.getClass());
         Assertions.assertEquals(response, pessoa);
         Assertions.assertNotNull(response);
@@ -88,9 +86,9 @@ class PessoaServiceImpTest {
     @DisplayName("should throw if a incorrect email pattern is provided")
     void createEmailError() {
         Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
-        pessoaRequestDTO.setDataNascimento("31/01/1993");
+        pessoaRequest.setDataNascimento("31/01/1993");
         try {
-            service.create(pessoaRequestDTO);
+            service.create(pessoaRequest);
         } catch (Exception e) {
             Assertions.assertEquals(IncorrectDateFormatException.class, e.getClass());
             Assertions.assertEquals("o formato da data deve ser dd-mm-yyyy", e.getMessage());
@@ -103,7 +101,7 @@ class PessoaServiceImpTest {
         Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
         Mockito.when(pessoaRepository.findByNome(anyString())).thenReturn(optionalPessoa);
         try {
-            service.create(pessoaRequestDTO);
+            service.create(pessoaRequest);
         } catch (Exception e) {
             Assertions.assertEquals(NameAlreadyExistsException.class, e.getClass());
             Assertions.assertEquals("nome já cadastrado", e.getMessage());
@@ -119,7 +117,7 @@ class PessoaServiceImpTest {
         Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(optionalPessoa);
         Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
 
-        Pessoa response = service.update(pessoaRequestDTO);
+        Pessoa response = service.update(pessoaRequest);
         Assertions.assertEquals(Pessoa.class, response.getClass());
         Assertions.assertEquals(response, pessoa);
         Assertions.assertNotNull(response);
@@ -131,9 +129,9 @@ class PessoaServiceImpTest {
     void updateEmailError() {
         Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(optionalPessoa);
         Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
-        pessoaRequestDTO.setDataNascimento("31/01/1993");
+        pessoaRequest.setDataNascimento("31/01/1993");
         try {
-            service.update(pessoaRequestDTO);
+            service.update(pessoaRequest);
         } catch (Exception e) {
             Assertions.assertEquals(IncorrectDateFormatException.class, e.getClass());
             Assertions.assertEquals("o formato da data deve ser dd-mm-yyyy", e.getMessage());
@@ -146,7 +144,7 @@ class PessoaServiceImpTest {
         Mockito.when(pessoaRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
         try {
-            service.update(pessoaRequestDTO);
+            service.update(pessoaRequest);
         } catch (Exception e) {
             Assertions.assertEquals(ResourceNotFoundException.class, e.getClass());
             Assertions.assertEquals("pessoa não cadastrada", e.getMessage());
@@ -160,7 +158,7 @@ class PessoaServiceImpTest {
         Mockito.when(pessoaRepository.save(any())).thenReturn(pessoa);
         Mockito.when(pessoaRepository.findByNome(anyString())).thenReturn(optionalPessoa);
         try {
-            service.update(pessoaRequestDTO);
+            service.update(pessoaRequest);
         } catch (Exception e) {
             Assertions.assertEquals(NameAlreadyExistsException.class, e.getClass());
             Assertions.assertEquals("nome já cadastrado", e.getMessage());
@@ -175,6 +173,6 @@ class PessoaServiceImpTest {
     private void iniciaPessoa() {
         pessoa = new Pessoa(ID, NOME, DATA_NASCIMENTO, null);
         optionalPessoa = Optional.of(new Pessoa(ID, NOME, DATA_NASCIMENTO, null));
-        pessoaRequestDTO = new PessoaRequestDTO(ID, NOME, DATA_NASCIMENTO_STRING);
+        pessoaRequest = new PessoaRequest(ID, NOME, DATA_NASCIMENTO_STRING);
     }
 }
